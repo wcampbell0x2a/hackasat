@@ -65,6 +65,16 @@ impl Stars {
     }
 }
 
+fn generate_image(grid: &Vec<Vec<u8>>, iteration: u8) {
+    let mut imgbuf = image::RgbImage::new(129, 129);
+    for (i, line) in grid.iter().enumerate() {
+        for (j, val) in line.iter().enumerate() {
+            imgbuf.put_pixel(i as u32, j as u32, image::Rgb([*val, 0, 0]));
+        }
+    }
+    imgbuf.save(&format!("{}.png", iteration)).unwrap();
+}
+
 fn main() -> std::io::Result<()> {
     // read from tcp socket
     let mut stream = TcpStream::connect("stars.satellitesabove.me:5013")?;
@@ -78,6 +88,8 @@ fn main() -> std::io::Result<()> {
     file.read_to_string(&mut ticket)?;
 
     stream.write_all(format!("{}\n", ticket).as_bytes())?;
+
+    let mut iteration = 0;
 
     loop {
         println!("receiving");
@@ -144,6 +156,9 @@ fn main() -> std::io::Result<()> {
         println!("{:#?}", stars);
         stars.write(&stream).unwrap();
 
+        // generate actual ccd image
+        generate_image(&grid, iteration);
+
         // recieve some boilerplate strings that come after a success
         loop {
             let mut buf = vec![0u8, 6];
@@ -153,5 +168,6 @@ fn main() -> std::io::Result<()> {
                 break;
             }
         }
+        iteration = iteration + 1;
     }
 }
