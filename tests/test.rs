@@ -5,7 +5,7 @@ mod tests {
     use std::io::Read;
 
     fn test_str(iteration: u8) -> Stars {
-        let mut file = std::fs::File::open(format!("{}.txt", iteration)).unwrap();
+        let mut file = std::fs::File::open(format!("tests/{}.txt", iteration)).unwrap();
         let mut s = String::new();
         file.read_to_string(&mut s).unwrap();
 
