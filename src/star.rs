@@ -31,17 +31,17 @@ impl PartialEq<Star> for Star {
 
 pub type Bodies = Vec<Star>;
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Stars {
     pub stars: Vec<Star>,
 }
 
 impl Stars {
     pub fn new() -> Self {
-        Stars { stars: Vec::new() }
+        Stars { .. Default::default() }
     }
 
-    pub fn from_grid(grid: &Vec<Vec<u8>>) -> Self {
+    pub fn from_grid(grid: &[Vec<u8>]) -> Self {
         // keep track of bodies of stars and the brightest stars
         let mut stars = Stars::new();
         let mut bodies = Bodies::new();
@@ -56,7 +56,7 @@ impl Stars {
         stars
     }
 
-    pub fn push(&mut self, i: usize, j: usize, bodies: &Bodies) {
+    pub fn push(&mut self, i: usize, j: usize, bodies: &[Star]) {
         if !bodies.iter().any(|a| *a == (i - 1, j))
             && !bodies.iter().any(|a| *a == (i, j - 1))
             && !bodies.iter().any(|a| *a == (i - 1, j - 1))
