@@ -134,7 +134,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "i_see_starts"
+name = "i_see_stars"
 version = "0.1.0"
 dependencies = [
  "image",
