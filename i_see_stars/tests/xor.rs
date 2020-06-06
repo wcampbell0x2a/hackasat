@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
-    use i_see_stars::star::{Star};
-    use i_see_stars::{star, xor};
+    use library::star::{Star};
+    use library::{star, xor};
     use std::io::Read;
 
     #[test]

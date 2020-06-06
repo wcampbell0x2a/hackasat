@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
-    use i_see_stars::star::{Star, Stars};
-    use i_see_stars::{generate, star};
+    use library::star::{Star, Stars};
+    use library::{generate, star};
     use std::io::Read;
 
     fn test_str(iteration: u8) -> Stars {
