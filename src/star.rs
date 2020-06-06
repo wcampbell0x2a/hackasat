@@ -59,15 +59,25 @@ impl Stars {
     }
 
     pub fn push(&mut self, i: usize, j: usize, bodies: &[Star]) {
-        if !bodies.iter().any(|a| *a == (i - 1, j))
-            && !bodies.iter().any(|a| *a == (i, j - 1))
-            && !bodies.iter().any(|a| *a == (i - 1, j - 1))
-            && !bodies.iter().any(|a| *a == (i + 1, j - 1))
-            && !bodies.iter().any(|a| *a == (i + 1, j))
+        let i_less = if i > 0 {
+            !bodies.iter().any(|a| *a == (i - 1, j)) && !bodies.iter().any(|a| *a == (i - 1, j + 1))
+        } else {
+            false
+        };
+        let j_less = if j > 0 {
+            !bodies.iter().any(|a| *a == (i, j - 1)) && !bodies.iter().any(|a| *a == (i + 1, j - 1))
+        } else {
+            false
+        };
+        let ji_less = if i > 0 && j > 0 {
+            !bodies.iter().any(|a| *a == (i - 1, j - 1))
+        } else {
+            false
+        };
+        let regular = !bodies.iter().any(|a| *a == (i + 1, j))
             && !bodies.iter().any(|a| *a == (i + 1, j + 1))
-            && !bodies.iter().any(|a| *a == (i, j + 1))
-            && !bodies.iter().any(|a| *a == (i - 1, j + 1))
-        {
+            && !bodies.iter().any(|a| *a == (i, j + 1));
+        if i_less && j_less & ji_less && regular {
             self.stars.push(Star::new(i, j));
         }
     }
