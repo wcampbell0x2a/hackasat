@@ -38,7 +38,9 @@ pub struct Stars {
 
 impl Stars {
     pub fn new() -> Self {
-        Stars { .. Default::default() }
+        Stars {
+            ..Default::default()
+        }
     }
 
     pub fn from_grid(grid: &[Vec<u8>]) -> Self {
@@ -75,8 +77,7 @@ impl Stars {
             let s = format!("{},{}\n", star.i, star.j);
             stream.write_all(s.as_bytes())?;
         }
-        stream.write_all(b"\n")?;
-        Ok(())
+        Ok(stream.write_all(b"\n")?)
     }
 }
 

@@ -1,11 +1,11 @@
 #[cfg(test)]
 mod tests {
-    use i_see_stars::star;
     use i_see_stars::star::{Star, Stars};
+    use i_see_stars::{generate, star};
     use std::io::Read;
 
-    fn test_str(input: &str) -> Stars {
-        let mut file = std::fs::File::open(input).unwrap();
+    fn test_str(iteration: u8) -> Stars {
+        let mut file = std::fs::File::open(format!("{}.txt", iteration)).unwrap();
         let mut s = String::new();
         file.read_to_string(&mut s).unwrap();
 
@@ -14,13 +14,16 @@ mod tests {
         // create grid for CCD image
         let grid = star::create_grid(&s);
 
+        // generate realistic CCD image
+        generate::image(&grid, iteration);
+
         // find star positions
         star::Stars::from_grid(&grid)
     }
 
     #[test]
     fn test() -> std::io::Result<()> {
-        let stars = test_str("0.txt");
+        let stars = test_str(0);
 
         println!("{:?}", stars);
         assert_eq!(
@@ -39,7 +42,7 @@ mod tests {
             ]
         );
 
-        let stars = test_str("1.txt");
+        let stars = test_str(1);
         println!("{:?}", stars);
         assert_eq!(
             stars.stars,
@@ -57,7 +60,7 @@ mod tests {
             ]
         );
 
-        let stars = test_str("2.txt");
+        let stars = test_str(2);
         println!("{:?}", stars);
         assert_eq!(
             stars.stars,
@@ -75,7 +78,7 @@ mod tests {
             ]
         );
 
-        let stars = test_str("3.txt");
+        let stars = test_str(3);
         println!("{:?}", stars);
         assert_eq!(
             stars.stars,
@@ -93,7 +96,7 @@ mod tests {
             ]
         );
 
-        let stars = test_str("4.txt");
+        let stars = test_str(4);
         println!("{:?}", stars);
         assert_eq!(
             stars.stars,
