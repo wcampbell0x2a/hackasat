@@ -143,8 +143,7 @@ checksum = "12cb882ccb290b8646e554b157ab0b71e64e8d5bef775cd66b6531e52d302669"
 name = "i_see_stars"
 version = "0.1.0"
 dependencies = [
- "histogram",
- "image",
+ "library",
 ]
 
 [[package]]
@@ -195,6 +194,14 @@ name = "libc"
 version = "0.2.71"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9457b06509d27052635f90d6466700c65095fdf75409b3fbdd903e988b886f49"
+
+[[package]]
+name = "library"
+version = "0.1.0"
+dependencies = [
+ "histogram",
+ "image",
+]
 
 [[package]]
 name = "lzw"

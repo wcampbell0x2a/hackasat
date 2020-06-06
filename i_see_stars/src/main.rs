@@ -1,8 +1,7 @@
 use std::io::{Read, Write};
 use std::net::TcpStream;
 
-use i_see_stars::generate;
-use i_see_stars::star;
+use library::{star, generate};
 
 fn main() -> std::io::Result<()> {
     // read from tcp socket

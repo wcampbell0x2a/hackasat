@@ -1,15 +1,11 @@
 [package]
-name = "i_see_stars"
+name = "library"
 version = "0.1.0"
-authors = ["wcampbell"]
+authors = ["wcampbell <wcampbell1995@gmail.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[workspace]
-members = [
-    "library",
-]
-
 [dependencies]
-library = { path = "library" }
+image = "0.23.4"
+histogram = "0.6.9"
