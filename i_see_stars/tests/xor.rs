@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use library::star::{Star};
+    use library::star::Star;
     use library::{star, xor};
     use std::io::Read;
 
@@ -39,5 +39,36 @@ mod tests {
         }
 
         Ok(())
+    }
+
+    #[test]
+    fn ayy() {
+        let mut file = std::fs::File::open("tests/0.txt").unwrap();
+        let mut s = String::new();
+        file.read_to_string(&mut s).unwrap();
+        println!("before\n{}", s);
+
+        // create grid for CCD image
+        let grid = star::create_grid(&s);
+
+        let grid = xor::xor_repeating_grid(&grid, &[0x01, 0xff, 0xaa, 0xab, 0x11]);
+        let stream = xor::grid_to_stream(&grid);
+        let keysizes = xor::find_xor_reapeating_keysizes(&stream);
+        println!("keysize?: {:?}", keysizes);
+        for key in keysizes {
+            let t = xor::transpose(&stream, key);
+            let mut v = vec![];
+            for group in t {
+                let r = xor::find_xor_key_repeating(&group);
+                if let Some(r) = r {
+                    v.push(r);
+                }
+            }
+            println!("maybe key?: {:x?}", v);
+            // TODO de-encrypt
+            // TODO convert stream to grid
+            // stars + image
+        }
+
     }
 }
