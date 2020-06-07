@@ -123,17 +123,15 @@ impl FromStr for Grid {
 
     /// create a 2d vector of i and j data
     fn from_str(input: &str) -> Result<Self, Self::Err> {
-        let mut grid = vec![vec![]];
-        for line in input.lines() {
-            let mut v = vec![];
-            for val in line.split(',') {
-                if let Ok(val) = val.parse::<u8>() {
-                    v.push(val);
-                }
-            }
-            grid.push(v);
-        }
-        grid.remove(0);
+        let grid: Vec<Vec<_>> = input
+            .lines()
+            .into_iter()
+            .map(|line| {
+                line.split(',')
+                    .filter_map(|val| val.parse::<u8>().ok())
+                    .collect()
+            })
+            .collect();
         Ok(Self { inner: grid })
     }
 }
