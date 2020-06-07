@@ -16,6 +16,7 @@ mod tests {
 
         let grid = xor::xor_grid(&grid, 0x0a);
         if let Some(key) = xor::find_xor_key(&grid) {
+            assert_eq!(key, 0x0a);
             let grid = xor::xor_grid(&grid, key);
 
             // find star positions

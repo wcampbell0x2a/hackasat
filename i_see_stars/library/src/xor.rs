@@ -30,7 +30,7 @@ pub fn find_xor_key(grid: &Grid) -> Option<u8> {
     (0u8..0xff)
         .map(|key| (key, xor_grid(&grid, key)))
         .filter_map(|(key, xor_bytes)| Some((key, frequency_num(&xor_bytes)?)))
-        .find(|(key, (mean, max, stddev, ninety_ninth))| {
+        .find(|(_, (mean, max, _stddev, ninety_ninth))| {
             *max == 255 && *mean < 10 && *ninety_ninth == 255
         })
         .map(|(key, _)| key)
@@ -40,7 +40,7 @@ pub fn find_xor_key_repeating(bytes: &[u8]) -> Option<u8> {
     (0u8..0xff)
         .map(|key| (key, bytes.iter().map(|a| a ^ key).collect::<Vec<u8>>()))
         .filter_map(|(key, xor_bytes)| Some((key, frequency_num_repeated(&xor_bytes)?)))
-        .find(|(key, (mean, max, stddev, ninety_ninth))| {
+        .find(|(_, (mean, max, _stddev, ninety_ninth))| {
             *max == 255 && *mean < 10 && *ninety_ninth == 255
         })
         .map(|(key, _)| key)
