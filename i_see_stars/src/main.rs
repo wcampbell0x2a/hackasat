@@ -1,5 +1,6 @@
 use std::io::{Read, Write};
 use std::net::TcpStream;
+use std::str::FromStr;
 
 use library::{generate, star};
 
@@ -61,7 +62,7 @@ fn main() -> std::io::Result<()> {
         //}
 
         // create grid for CCD image
-        let grid = star::Grid::from_str(input);
+        let grid = star::Grid::from_str(input).unwrap();
 
         // find star positions
         let stars = star::Stars::from_grid(&grid);

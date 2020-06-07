@@ -61,8 +61,6 @@ pub fn find_xor_key_repeating(bytes: &[u8]) -> Option<u8> {
 
 pub fn find_xor_reapeating_keysizes(bytes: &[u8]) -> Vec<u8> {
     let mut v = vec![];
-    let mut smallest_hamming = bytes.len() as u32;
-    let mut keysize = 0 as u8;
     for maybe_keysize in 3..=15 {
         let a = &bytes[..maybe_keysize];
         let b = &bytes[maybe_keysize..maybe_keysize * 2];
@@ -114,7 +112,7 @@ pub fn frequency_num(grid: &[Vec<u8>]) -> Option<(u64, u64, u64, u64)> {
     }
 }
 
-pub fn frequency_num_repeated(bytes: &Vec<u8>) -> Option<(u64, u64, u64, u64)> {
+pub fn frequency_num_repeated(bytes: &[u8]) -> Option<(u64, u64, u64, u64)> {
     let mut histogram = Histogram::new();
     for byte in bytes.iter() {
         histogram.increment(*byte as u64).unwrap();

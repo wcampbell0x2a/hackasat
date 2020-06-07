@@ -1,6 +1,7 @@
 use std::io::Write;
 use std::net::TcpStream;
 use std::ops::Deref;
+use std::str::FromStr;
 
 #[derive(Debug)]
 pub struct Star {
@@ -109,9 +110,23 @@ impl Grid {
         Grid { inner }
     }
 
+    pub fn to_stream(&self) -> Vec<u8> {
+        //TODO iter this
+        let mut v = Vec::<u8>::new();
+        for line in self.inner.iter() {
+            for i in line.iter() {
+                v.push(*i);
+            }
+        }
+        v
+    }
+}
+
+impl FromStr for Grid {
+    type Err = std::num::ParseIntError;
+
     /// create a 2d vector of i and j data
-    /// TODO use from() trait for str
-    pub fn from_str(input: &str) -> Self {
+    fn from_str(input: &str) -> Result<Self, Self::Err> {
         let mut grid = vec![vec![]];
         for line in input.lines() {
             let mut v = vec![];
@@ -123,18 +138,7 @@ impl Grid {
             grid.push(v);
         }
         grid.remove(0);
-        Self { inner: grid }
-    }
-
-    pub fn to_stream(&self) -> Vec<u8> {
-        //TODO iter this
-        let mut v = Vec::<u8>::new();
-        for line in self.inner.iter() {
-            for i in line.iter() {
-                v.push(*i);
-            }
-        }
-        v
+        Ok(Self { inner: grid })
     }
 }
 

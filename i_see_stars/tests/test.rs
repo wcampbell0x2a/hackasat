@@ -3,6 +3,7 @@ mod tests {
     use library::star::{Star, Stars};
     use library::{generate, star};
     use std::io::Read;
+    use std::str::FromStr;
 
     fn test_str(iteration: u8) -> Stars {
         let mut file = std::fs::File::open(format!("tests/{}.txt", iteration)).unwrap();
@@ -12,7 +13,7 @@ mod tests {
         println!("{}", s);
 
         // create grid for CCD image
-        let grid = star::Grid::from_str(&s);
+        let grid = star::Grid::from_str(&s).unwrap();
 
         // generate realistic CCD image
         generate::image(&grid, iteration);

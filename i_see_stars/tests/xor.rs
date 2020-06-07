@@ -3,6 +3,7 @@ mod tests {
     use library::star::Star;
     use library::{star, xor};
     use std::io::Read;
+    use std::str::FromStr;
 
     #[test]
     fn test() -> std::io::Result<()> {
@@ -11,7 +12,7 @@ mod tests {
         file.read_to_string(&mut s).unwrap();
 
         // create grid for CCD image
-        let grid = star::Grid::from_str(&s);
+        let grid = star::Grid::from_str(&s).unwrap();
 
         let grid = xor::xor_grid(&grid, 0x0a);
         if let Some(key) = xor::find_xor_key(&grid) {
@@ -49,7 +50,7 @@ mod tests {
         println!("before\n{}", s);
 
         // create grid for CCD image
-        let orig_grid = star::Grid::from_str(&s);
+        let orig_grid = star::Grid::from_str(&s).unwrap();
 
         let grid = xor::xor_repeating_grid(&orig_grid, &[0x01, 0x1a, 0xaa, 0xab, 0x11]);
         let stream = grid.to_stream();
