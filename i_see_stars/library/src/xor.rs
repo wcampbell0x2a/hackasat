@@ -27,36 +27,23 @@ pub fn xor_repeating_grid(grid: &Grid, key: &[u8]) -> Grid {
 }
 
 pub fn find_xor_key(grid: &Grid) -> Option<u8> {
-    // TODO functional-ize this
-    for (key, xor_bytes) in (0u8..0xff).map(|key| (key, xor_grid(&grid, key))) {
-        if let Some((mean, max, stddev, ninety_ninth)) = frequency_num(&xor_bytes) {
-            if max == 255 && mean < 10 && ninety_ninth == 255 {
-                println!(
-                    "mean: {}, max: {}, stddev: {}, ninety_ninth: {}",
-                    mean, max, stddev, ninety_ninth
-                );
-                return Some(key);
-            }
-        }
-    }
-    None
+    (0u8..0xff)
+        .map(|key| (key, xor_grid(&grid, key)))
+        .filter_map(|(key, xor_bytes)| Some((key, frequency_num(&xor_bytes)?)))
+        .find(|(key, (mean, max, stddev, ninety_ninth))| {
+            *max == 255 && *mean < 10 && *ninety_ninth == 255
+        })
+        .map(|(key, _)| key)
 }
 
 pub fn find_xor_key_repeating(bytes: &[u8]) -> Option<u8> {
-    for (key, xor_bytes) in
-        (0u8..0xff).map(|key| (key, bytes.iter().map(|a| a ^ key).collect::<Vec<u8>>()))
-    {
-        if let Some((mean, max, stddev, ninety_ninth)) = frequency_num_repeated(&xor_bytes) {
-            if max == 255 && mean < 10 && ninety_ninth == 255 {
-                println!(
-                    "mean: {}, max: {}, stddev: {}, ninety_ninth: {}",
-                    mean, max, stddev, ninety_ninth
-                );
-                return Some(key);
-            }
-        }
-    }
-    None
+    (0u8..0xff)
+        .map(|key| (key, bytes.iter().map(|a| a ^ key).collect::<Vec<u8>>()))
+        .filter_map(|(key, xor_bytes)| Some((key, frequency_num_repeated(&xor_bytes)?)))
+        .find(|(key, (mean, max, stddev, ninety_ninth))| {
+            *max == 255 && *mean < 10 && *ninety_ninth == 255
+        })
+        .map(|(key, _)| key)
 }
 
 pub fn find_xor_reapeating_keysizes(bytes: &[u8]) -> Vec<u8> {

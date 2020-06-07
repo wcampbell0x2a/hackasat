@@ -10,7 +10,6 @@ pub struct Star {
 }
 
 impl Star {
-    // TODO trait for usize/u8
     pub fn new(i: usize, j: usize) -> Self {
         Star {
             i: i as u8,
@@ -111,14 +110,11 @@ impl Grid {
     }
 
     pub fn to_stream(&self) -> Vec<u8> {
-        //TODO iter this
-        let mut v = Vec::<u8>::new();
-        for line in self.inner.iter() {
-            for i in line.iter() {
-                v.push(*i);
-            }
-        }
-        v
+        self.inner
+            .to_vec()
+            .into_iter()
+            .flatten()
+            .collect::<Vec<u8>>()
     }
 }
 
