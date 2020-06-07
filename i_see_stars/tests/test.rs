@@ -12,7 +12,7 @@ mod tests {
         println!("{}", s);
 
         // create grid for CCD image
-        let grid = star::create_grid(&s);
+        let grid = star::Grid::from_str(&s);
 
         // generate realistic CCD image
         generate::image(&grid, iteration);

@@ -61,7 +61,7 @@ fn main() -> std::io::Result<()> {
         //}
 
         // create grid for CCD image
-        let grid = star::create_grid(input);
+        let grid = star::Grid::from_str(input);
 
         // find star positions
         let stars = star::Stars::from_grid(&grid);

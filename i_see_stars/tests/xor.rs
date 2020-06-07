@@ -11,7 +11,7 @@ mod tests {
         file.read_to_string(&mut s).unwrap();
 
         // create grid for CCD image
-        let grid = star::create_grid(&s);
+        let grid = star::Grid::from_str(&s);
 
         let grid = xor::xor_grid(&grid, 0x0a);
         if let Some(key) = xor::find_xor_key(&grid) {
@@ -49,10 +49,10 @@ mod tests {
         println!("before\n{}", s);
 
         // create grid for CCD image
-        let grid = star::create_grid(&s);
+        let grid = star::Grid::from_str(&s);
 
         let grid = xor::xor_repeating_grid(&grid, &[0x01, 0xff, 0xaa, 0xab, 0x11]);
-        let stream = xor::grid_to_stream(&grid);
+        let stream = grid.to_stream();
         let keysizes = xor::find_xor_reapeating_keysizes(&stream);
         println!("keysize?: {:?}", keysizes);
         for key in keysizes {

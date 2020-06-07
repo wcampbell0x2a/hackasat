@@ -1,15 +1,16 @@
 use histogram::Histogram;
+use crate::star::Grid;
 
-pub fn xor_grid(grid: &[Vec<u8>], key: u8) -> Vec<Vec<u8>> {
-    grid.iter()
+pub fn xor_grid(grid: &Grid, key: u8) -> Grid {
+    Grid::new(grid.iter()
         .map(|a| a.iter().map(|b| b ^ key).collect())
-        .collect()
+        .collect())
 }
 
-pub fn xor_repeating_grid(grid: &[Vec<u8>], key: &[u8]) -> Vec<Vec<u8>> {
+pub fn xor_repeating_grid(grid: &[Vec<u8>], key: &[u8]) -> Grid {
     let mut count = 0;
     let length = key.len();
-    grid.iter()
+    Grid::new(grid.iter()
         .map(|a| {
             a.iter()
                 .map(|b| {
@@ -18,12 +19,12 @@ pub fn xor_repeating_grid(grid: &[Vec<u8>], key: &[u8]) -> Vec<Vec<u8>> {
                 })
                 .collect()
         })
-        .collect()
+        .collect())
 }
 
-pub fn find_xor_key(grid: &[Vec<u8>]) -> Option<u8> {
+pub fn find_xor_key(grid: &Grid) -> Option<u8> {
     // TODO functional-ize this
-    for (key, xor_bytes) in (0u8..0xff).map(|key| (key, xor_grid(grid, key))) {
+    for (key, xor_bytes) in (0u8..0xff).map(|key| (key, xor_grid(&grid, key))) {
         if let Some((mean, max, stddev, ninety_ninth)) = frequency_num(&xor_bytes) {
             if max == 255 && mean < 10 && ninety_ninth == 255 {
                 println!(
@@ -89,16 +90,6 @@ pub fn transpose(bytes: &[u8], keysize: u8) -> Vec<Vec<u8>> {
     transposed
 }
 
-pub fn grid_to_stream(grid: &[Vec<u8>]) -> Vec<u8> {
-    //TODO iter this
-    let mut v = Vec::<u8>::new();
-    for line in grid.iter() {
-        for i in line.iter() {
-            v.push(*i);
-        }
-    }
-    v
-}
 
 pub fn frequency_num(grid: &[Vec<u8>]) -> Option<(u64, u64, u64, u64)> {
     let mut histogram = Histogram::new();
@@ -148,6 +139,7 @@ pub fn hamming_distance(s1: &[u8], s2: &[u8]) -> u32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::Star::Grid;
 
     #[test]
     fn repeating_xor() {
@@ -167,8 +159,8 @@ mod tests {
 
     #[test]
     fn grid_stream() {
-        let grid = vec![vec![0x01, 0x02], vec![0x03, 0x04]];
-        assert_eq!(vec![0x01, 0x02, 0x03, 0x04], grid_to_stream(&grid));
+        let grid = Grid::new(vec![vec![0x01, 0x02], vec![0x03, 0x04]]);
+        assert_eq!(vec![0x01, 0x02, 0x03, 0x04], grid.to_stream());
     }
 
     #[test]

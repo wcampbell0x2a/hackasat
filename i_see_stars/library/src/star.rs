@@ -1,5 +1,6 @@
 use std::io::Write;
 use std::net::TcpStream;
+use std::ops::Deref;
 
 #[derive(Debug)]
 pub struct Star {
@@ -91,18 +92,49 @@ impl Stars {
     }
 }
 
-/// create a 2d vector of i and j data
-pub fn create_grid(input: &str) -> Vec<Vec<u8>> {
-    let mut grid = vec![vec![]];
-    for line in input.lines() {
-        let mut v = vec![];
-        for val in line.split(',') {
-            if let Ok(val) = val.parse::<u8>() {
-                v.push(val);
+pub struct Grid {
+    inner: Vec<Vec<u8>>,
+}
+
+impl Grid {
+
+    pub fn new(inner: Vec<Vec<u8>>) -> Self {
+        Grid { inner }
+    }
+
+    /// create a 2d vector of i and j data
+    /// TODO use from() trait for str
+    pub fn from_str(input: &str) -> Self {
+        let mut grid = vec![vec![]];
+        for line in input.lines() {
+            let mut v = vec![];
+            for val in line.split(',') {
+                if let Ok(val) = val.parse::<u8>() {
+                    v.push(val);
+                }
+            }
+            grid.push(v);
+        }
+        grid.remove(0);
+        Self {inner: grid }
+    }
+
+    pub fn to_stream(&self) -> Vec<u8> {
+        //TODO iter this
+        let mut v = Vec::<u8>::new();
+        for line in self.inner.iter() {
+            for i in line.iter() {
+                v.push(*i);
             }
         }
-        grid.push(v);
+    v
     }
-    grid.remove(0);
-    grid
+}
+
+impl Deref for Grid {
+    type Target = Vec<Vec<u8>>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.inner
+    }
 }
