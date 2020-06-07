@@ -27,7 +27,7 @@ mod tests {
 
         println!("{:?}", stars);
         assert_eq!(
-            stars.stars,
+            *stars,
             vec![
                 Star { i: 14, j: 51 },
                 Star { i: 20, j: 115 },
@@ -45,7 +45,7 @@ mod tests {
         let stars = test_str(1);
         println!("{:?}", stars);
         assert_eq!(
-            stars.stars,
+            *stars,
             vec![
                 Star { i: 15, j: 43 },
                 Star { i: 18, j: 119 },
@@ -63,7 +63,7 @@ mod tests {
         let stars = test_str(2);
         println!("{:?}", stars);
         assert_eq!(
-            stars.stars,
+            *stars,
             vec![
                 Star { i: 6, j: 47 },
                 Star { i: 8, j: 23 },
@@ -81,7 +81,7 @@ mod tests {
         let stars = test_str(3);
         println!("{:?}", stars);
         assert_eq!(
-            stars.stars,
+            *stars,
             vec![
                 Star { i: 11, j: 43 },
                 Star { i: 18, j: 65 },
@@ -99,7 +99,7 @@ mod tests {
         let stars = test_str(4);
         println!("{:?}", stars);
         assert_eq!(
-            stars.stars,
+            *stars,
             vec![
                 Star { i: 11, j: 36 },
                 Star { i: 32, j: 85 },

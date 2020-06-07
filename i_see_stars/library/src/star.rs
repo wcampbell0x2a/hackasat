@@ -92,6 +92,14 @@ impl Stars {
     }
 }
 
+impl Deref for Stars {
+    type Target = Vec<Star>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.stars
+    }
+}
+
 pub struct Grid {
     inner: Vec<Vec<u8>>,
 }
@@ -135,5 +143,15 @@ impl Deref for Grid {
 
     fn deref(&self) -> &Self::Target {
         &self.inner
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn grid_stream() {
+        let grid = Grid::new(vec![vec![0x01, 0x02], vec![0x03, 0x04]]);
+        assert_eq!(vec![0x01, 0x02, 0x03, 0x04], grid.to_stream());
     }
 }

@@ -20,7 +20,7 @@ mod tests {
             // find star positions
             let stars = star::Stars::from_grid(&grid);
             assert_eq!(
-                stars.stars,
+                *stars,
                 vec![
                     Star { i: 14, j: 51 },
                     Star { i: 20, j: 115 },
@@ -49,9 +49,9 @@ mod tests {
         println!("before\n{}", s);
 
         // create grid for CCD image
-        let grid = star::Grid::from_str(&s);
+        let orig_grid = star::Grid::from_str(&s);
 
-        let grid = xor::xor_repeating_grid(&grid, &[0x01, 0xff, 0xaa, 0xab, 0x11]);
+        let grid = xor::xor_repeating_grid(&orig_grid, &[0x01, 0x1a, 0xaa, 0xab, 0x11]);
         let stream = grid.to_stream();
         let keysizes = xor::find_xor_reapeating_keysizes(&stream);
         println!("keysize?: {:?}", keysizes);
@@ -65,9 +65,11 @@ mod tests {
                 }
             }
             println!("maybe key?: {:x?}", v);
-            // TODO de-encrypt
-            // TODO convert stream to grid
-            // stars + image
+            let last_grid = xor::xor_repeating_grid(&grid, &v);
+            assert_eq!(*last_grid, *orig_grid);
+
+            // TODO this test actually finds two keys, so that's a problem
+            break;
         }
     }
 }

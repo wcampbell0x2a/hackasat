@@ -9,7 +9,7 @@ pub fn xor_grid(grid: &Grid, key: u8) -> Grid {
     )
 }
 
-pub fn xor_repeating_grid(grid: &[Vec<u8>], key: &[u8]) -> Grid {
+pub fn xor_repeating_grid(grid: &Grid, key: &[u8]) -> Grid {
     let mut count = 0;
     let length = key.len();
     Grid::new(
@@ -142,28 +142,24 @@ pub fn hamming_distance(s1: &[u8], s2: &[u8]) -> u32 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::Star::Grid;
+    use crate::star::Grid;
 
     #[test]
     fn repeating_xor() {
-        let grid = vec![
+        let grid = Grid::new(vec![
             vec![0x00, 0x00, 0x00, 0x00],
             vec![0x00, 0x00, 0x00],
             vec![0x00, 0x00, 0x00],
-        ];
+        ]);
         let r = xor_repeating_grid(&grid, &[0x01, 0x02, 0x03]);
-        let exp = vec![
+        let exp = Grid::new(vec![
             vec![0x01, 0x02, 0x03, 0x01],
             vec![0x02, 0x03, 0x01],
             vec![0x02, 0x03, 0x01],
-        ];
-        assert_eq!(r, exp);
-    }
-
-    #[test]
-    fn grid_stream() {
-        let grid = Grid::new(vec![vec![0x01, 0x02], vec![0x03, 0x04]]);
-        assert_eq!(vec![0x01, 0x02, 0x03, 0x04], grid.to_stream());
+        ]);
+        assert_eq!(*r, *exp);
+        let r = xor_repeating_grid(&exp, &[0x01, 0x02, 0x03]);
+        assert_eq!(*r, *grid);
     }
 
     #[test]
