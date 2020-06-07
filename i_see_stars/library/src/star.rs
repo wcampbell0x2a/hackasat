@@ -97,7 +97,6 @@ pub struct Grid {
 }
 
 impl Grid {
-
     pub fn new(inner: Vec<Vec<u8>>) -> Self {
         Grid { inner }
     }
@@ -116,7 +115,7 @@ impl Grid {
             grid.push(v);
         }
         grid.remove(0);
-        Self {inner: grid }
+        Self { inner: grid }
     }
 
     pub fn to_stream(&self) -> Vec<u8> {
@@ -127,7 +126,7 @@ impl Grid {
                 v.push(*i);
             }
         }
-    v
+        v
     }
 }
 

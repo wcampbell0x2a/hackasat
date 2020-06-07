@@ -1,25 +1,29 @@
-use histogram::Histogram;
 use crate::star::Grid;
+use histogram::Histogram;
 
 pub fn xor_grid(grid: &Grid, key: u8) -> Grid {
-    Grid::new(grid.iter()
-        .map(|a| a.iter().map(|b| b ^ key).collect())
-        .collect())
+    Grid::new(
+        grid.iter()
+            .map(|a| a.iter().map(|b| b ^ key).collect())
+            .collect(),
+    )
 }
 
 pub fn xor_repeating_grid(grid: &[Vec<u8>], key: &[u8]) -> Grid {
     let mut count = 0;
     let length = key.len();
-    Grid::new(grid.iter()
-        .map(|a| {
-            a.iter()
-                .map(|b| {
-                    count += 1;
-                    b ^ key[(count - 1 as usize) % length]
-                })
-                .collect()
-        })
-        .collect())
+    Grid::new(
+        grid.iter()
+            .map(|a| {
+                a.iter()
+                    .map(|b| {
+                        count += 1;
+                        b ^ key[(count - 1 as usize) % length]
+                    })
+                    .collect()
+            })
+            .collect(),
+    )
 }
 
 pub fn find_xor_key(grid: &Grid) -> Option<u8> {
@@ -89,7 +93,6 @@ pub fn transpose(bytes: &[u8], keysize: u8) -> Vec<Vec<u8>> {
     }
     transposed
 }
-
 
 pub fn frequency_num(grid: &[Vec<u8>]) -> Option<(u64, u64, u64, u64)> {
     let mut histogram = Histogram::new();
