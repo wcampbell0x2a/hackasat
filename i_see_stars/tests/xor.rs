@@ -69,6 +69,5 @@ mod tests {
             // TODO convert stream to grid
             // stars + image
         }
-
     }
 }
