@@ -125,7 +125,6 @@ impl FromStr for Grid {
     fn from_str(input: &str) -> Result<Self, Self::Err> {
         let grid: Vec<Vec<_>> = input
             .lines()
-            .into_iter()
             .map(|line| {
                 line.split(',')
                     .filter_map(|val| val.parse::<u8>().ok())
