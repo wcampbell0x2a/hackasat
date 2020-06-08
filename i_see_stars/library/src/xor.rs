@@ -46,25 +46,24 @@ pub fn find_xor_key_repeating(bytes: &[u8]) -> Option<u8> {
         .map(|(key, _)| key)
 }
 
-pub fn find_xor_reapeating_keysizes(bytes: &[u8]) -> Vec<u8> {
-    let mut v = vec![];
-    for maybe_keysize in 3..=15 {
-        let a = &bytes[..maybe_keysize];
-        let b = &bytes[maybe_keysize..maybe_keysize * 2];
-        let c = &bytes[maybe_keysize * 2..maybe_keysize * 3];
-        let d = &bytes[maybe_keysize * 3..maybe_keysize * 4];
-        let ham1 = hamming_distance(a, b);
-        let ham2 = hamming_distance(c, d);
-        let ham3 = hamming_distance(a, c);
-        let ham4 = hamming_distance(a, d);
-        let ham_total = ((ham1 + ham2 + ham3 + ham4) / 4) / maybe_keysize as u32;
-        //let ham_total = ((ham1 + ham2) / 2) / maybe_keysize as u32;
-        //let ham_total = ham1 / maybe_keysize as u32;
-        println!("{}->{} ({})", maybe_keysize, ham_total, ham1);
-        v.push((ham_total, maybe_keysize));
-    }
-    v.sort();
-    v.iter().take(2).map(|a| a.1 as u8).collect()
+pub fn find_xor_reapeating_keysizes(bytes: &[u8]) -> Option<u8> {
+    (3..=15)
+        .map(|maybe_keysize| {
+            let a = &bytes[..maybe_keysize];
+            let b = &bytes[maybe_keysize..maybe_keysize * 2];
+            let c = &bytes[maybe_keysize * 2..maybe_keysize * 3];
+            let d = &bytes[maybe_keysize * 3..maybe_keysize * 4];
+            let ham1 = hamming_distance(a, b);
+            let ham2 = hamming_distance(c, d);
+            let ham3 = hamming_distance(a, c);
+            let ham4 = hamming_distance(a, d);
+            let ham_total = ((ham1 + ham2 + ham3 + ham4) / 4) / maybe_keysize as u32;
+            (ham_total, maybe_keysize as u8)
+        })
+        // find key with the least amount of hamming distance
+        .min()
+        // return only that value
+        .map(|(_, maybe_keysize)| maybe_keysize)
 }
 
 pub fn transpose(bytes: &[u8], keysize: u8) -> Vec<Vec<u8>> {

@@ -55,10 +55,9 @@ mod tests {
 
         let grid = xor::xor_repeating_grid(&orig_grid, &[0x01, 0x1a, 0xaa, 0xab, 0x11]);
         let stream = grid.to_stream();
-        let keysizes = xor::find_xor_reapeating_keysizes(&stream);
-        println!("keysize?: {:?}", keysizes);
-        for key in keysizes {
-            let t = xor::transpose(&stream, key);
+        if let Some(keysize) = xor::find_xor_reapeating_keysizes(&stream) {
+            println!("keysize?: {}", keysize);
+            let t = xor::transpose(&stream, keysize);
             let mut v = vec![];
             for group in t {
                 let r = xor::find_xor_key_repeating(&group);
@@ -69,9 +68,8 @@ mod tests {
             println!("maybe key?: {:x?}", v);
             let last_grid = xor::xor_repeating_grid(&grid, &v);
             assert_eq!(*last_grid, *orig_grid);
-
-            // TODO this test actually finds two keys, so that's a problem
-            break;
+        } else {
+            unreachable!();
         }
     }
 }
