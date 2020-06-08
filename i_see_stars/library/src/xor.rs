@@ -80,35 +80,29 @@ pub fn transpose(bytes: &[u8], keysize: u8) -> Vec<Vec<u8>> {
 
 pub fn frequency_num(grid: &[Vec<u8>]) -> Option<(u64, u64, u64, u64)> {
     let mut histogram = Histogram::new();
-    for line in grid.iter() {
-        for val in line.iter() {
-            histogram.increment(*val as u64).unwrap();
-        }
-    }
+    grid.iter().for_each(|line| {
+        line.iter()
+            .for_each(|val| histogram.increment(*val as u64).unwrap())
+    });
 
-    if let (Ok(mean), Ok(max), Some(stddev), Ok(ninety_ninth)) = (
-        histogram.mean(),
-        histogram.maximum(),
-        histogram.stddev(),
-        histogram.percentile(99.9),
-    ) {
-        Some((mean, max, stddev, ninety_ninth))
-    } else {
-        None
-    }
+    histogram_results(histogram)
 }
 
 pub fn frequency_num_repeated(bytes: &[u8]) -> Option<(u64, u64, u64, u64)> {
     let mut histogram = Histogram::new();
-    for byte in bytes.iter() {
+    bytes.iter().for_each(|byte| {
         histogram.increment(*byte as u64).unwrap();
-    }
+    });
+    histogram_results(histogram)
 
+}
+
+fn histogram_results(hist: Histogram) -> Option<(u64, u64, u64, u64)> {
     if let (Ok(mean), Ok(max), Some(stddev), Ok(ninety_ninth)) = (
-        histogram.mean(),
-        histogram.maximum(),
-        histogram.stddev(),
-        histogram.percentile(99.9),
+        hist.mean(),
+        hist.maximum(),
+        hist.stddev(),
+        hist.percentile(99.9),
     ) {
         Some((mean, max, stddev, ninety_ninth))
     } else {
