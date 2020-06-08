@@ -94,7 +94,6 @@ pub fn frequency_num_repeated(bytes: &[u8]) -> Option<(u64, u64, u64, u64)> {
         histogram.increment(*byte as u64).unwrap();
     });
     histogram_results(histogram)
-
 }
 
 fn histogram_results(hist: Histogram) -> Option<(u64, u64, u64, u64)> {
