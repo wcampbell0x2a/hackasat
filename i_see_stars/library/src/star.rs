@@ -50,7 +50,7 @@ impl Stars {
         let mut bodies = Bodies::new();
         for (i, line) in grid.iter().enumerate() {
             for (j, val) in line.iter().enumerate() {
-                if *val > 150 as u8 {
+                if *val > 166 as u8 {
                     bodies.push(Star::new(i, j));
                     stars.push(i, j, &bodies);
                 }
