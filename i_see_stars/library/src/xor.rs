@@ -144,6 +144,18 @@ mod tests {
         let input = b"this is a test";
         let input2 = b"wokka wokka!!!";
         assert_eq!(hamming_distance(input, input2), 37);
+
+        let input = [0x10, 0x12];
+        let input2 = [0x33, 0x15];
+        assert_eq!(hamming_distance(&input, &input2), 6);
+
+        let input = [0x10, 0x12, 0x33];
+        let input2 = [0x15, 0x15, 0x36];
+        assert_eq!(hamming_distance(&input, &input2), 7);
+
+        let input = [0x10, 0x12, 0x33, 0x15];
+        let input2 = [0x15, 0x36, 0x16, 0x18];
+        assert_eq!(hamming_distance(&input, &input2), 10);
     }
 
     #[test]
@@ -151,6 +163,11 @@ mod tests {
         let grid = vec![0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a];
         let t = transpose(&grid, 3);
         let exp = vec![vec![1, 4, 7, 10], vec![2, 5, 8], vec![3, 6, 9]];
+        assert_eq!(t, exp);
+
+        let grid = vec![0x10, 0x12, 0x33, 0x15, 0x15, 0x36, 0x16, 0x18];
+        let t = transpose(&grid, 3);
+        let exp = vec![vec![0x10, 0x15, 0x16], vec![0x12, 0x15, 0x18], vec![0x33, 0x36]];
         assert_eq!(t, exp);
     }
 }
