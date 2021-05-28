@@ -3,7 +3,7 @@ use std::net::TcpStream;
 use std::ops::Deref;
 use std::str::FromStr;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Star {
     pub i: u8,
     pub j: u8,
@@ -21,12 +21,6 @@ impl Star {
 impl PartialEq<(usize, usize)> for Star {
     fn eq(&self, other: &(usize, usize)) -> bool {
         self.i == other.0 as u8 && self.j == other.1 as u8
-    }
-}
-
-impl PartialEq<Star> for Star {
-    fn eq(&self, other: &Self) -> bool {
-        self.i == other.i && self.j == other.j
     }
 }
 
