@@ -25,7 +25,7 @@ fn main() -> std::io::Result<()> {
         let mut real_buf = vec![];
         loop {
             // Attempt to recieve CCD camera data and put into vec
-            let mut buf = vec![0u8, 2];
+            let mut buf = vec![0_u8, 2];
             stream.read_exact(&mut buf)?;
             let s = std::str::from_utf8(&buf).unwrap();
 
@@ -47,7 +47,7 @@ fn main() -> std::io::Result<()> {
 
         // read in useless strings after CCD data
         loop {
-            let mut buf = vec![0u8, 2];
+            let mut buf = vec![0_u8, 2];
             stream.read_exact(&mut buf)?;
             let s = std::str::from_utf8(&buf).unwrap();
             if s.chars().any(|a| a == '\n') {
@@ -76,7 +76,7 @@ fn main() -> std::io::Result<()> {
 
         // recieve some boilerplate strings that come after a success
         loop {
-            let mut buf = vec![0u8, 6];
+            let mut buf = vec![0_u8, 6];
             stream.read_exact(&mut buf)?;
             let s = std::str::from_utf8(&buf).unwrap();
             if s.chars().any(|a| a == '\n') {
